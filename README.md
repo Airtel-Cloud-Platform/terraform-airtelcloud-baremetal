@@ -216,4 +216,4 @@ resource). Both default to `false`, matching the provider's defaults.
 | Name | Version |
 |------|---------|
 | Terraform | >= 1.5 |
-| Airtel Cloud Provider | >= 1.1.3 |
+| Airtel Cloud Provider | >= 1.2.4 |
