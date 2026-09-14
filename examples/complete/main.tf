@@ -1,5 +1,5 @@
 module "baremetal" {
-  source = "Airtel-Cloud-Platform/baremetal/airtelcloud"
+  source = "../.."
 
   name       = "production-bm01"
   flavor     = "bm.xlarge"
@@ -18,6 +18,7 @@ module "baremetal" {
   is_reserved = true
   system_id   = "system-id"
 
+  keypair    = "my-keypair"
   keypair_id = "keypair-uuid"
   public_key = "ssh-rsa AAAA..."
 

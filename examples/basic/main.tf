@@ -1,5 +1,5 @@
 module "baremetal" {
-  source = "Airtel-Cloud-Platform/baremetal/airtelcloud"
+  source = "../.."
 
   name     = "bm01"
   flavor   = "bm.large"
@@ -10,5 +10,6 @@ module "baremetal" {
 
   availability_zone = "N1"
 
+  keypair    = "my-keypair"
   public_key = "ssh-rsa AAAA..."
 }
