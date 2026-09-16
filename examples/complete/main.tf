@@ -1,26 +1,29 @@
 module "baremetal" {
   source = "../.."
 
-  name       = "production-bm01"
-  flavor     = "bm.xlarge"
-  os_image   = "CentOS_Stream9_May2026"
-  cloud_init = <<-EOF
-    #!/bin/bash
-    echo "Hello World"
-  EOF
+  name     = "production-bm01"
+  flavor   = "bm.xlarge"
+  os_image = "CentOS_Stream9_May2026"
 
-  network_name             = "vpc-name"
-  subnet_name              = "subnet-name"
-  additional_subnet_names  = ["subnet-name-2"]
+  network_name            = "vpc-name"
+  subnet_name             = "subnet-name"
+  additional_subnet_names = ["subnet-name-2"]
 
   availability_zone = "N1"
 
   is_reserved = true
-  system_id   = "system-id"
 
-  keypair    = "my-keypair"
-  keypair_id = "keypair-uuid"
-  public_key = "ssh-rsa AAAA..."
+  keypair = "keypair-uuid"
+
+  cloud_init = <<-EOF
+    #cloud-config
+    package_update: true
+    packages:
+      - nginx
+    runcmd:
+      - systemctl enable nginx
+      - systemctl start nginx
+  EOF
 
   storage = [
     {

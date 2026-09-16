@@ -4,11 +4,18 @@ Terraform module for provisioning baremetal servers on Airtel Cloud.
 
 ## Features
 
-- Allocates an Airtel Cloud baremetal server and waits for it to reach `Ready` with power `On`
-- Resolves `network_name` / `subnet_name` (and any `additional_subnet_names`) to their backend IDs
-- Supports extra storage volumes and an initial backup schedule at allocation time
-- Supports toggling the backup policy in place after creation via `policy_enabled`
-- Exposes IP addresses and the backend port id (for use as a load balancer pool member)
+* Provisions an Airtel Cloud baremetal server and waits for it to reach Ready state with power On
+* Supports flavor and OS image selection.
+* Supports primary and additional subnet configuration.
+* Resolves VPC and subnet names to backend IDs through the Airtel Cloud provider.
+* Supports optional additional block storage.
+* Supports backup schedule configuration.
+* Supports cloud-init configuration for first-boot initialization.
+* Supports SSH keypair configuration.
+* Supports allocation from reserved capacity.
+* Supports backup policy enable/disable.
+* Supports configurable disk deletion and secure erase during destroy.
+* Exposes server state, power state, hostname, IP addresses, and backend port information.
 
 ## Usage
 
@@ -46,7 +53,21 @@ module "baremetal" {
   subnet_name              = "subnet-name"
   additional_subnet_names  = ["subnet-name-2"]
 
-  availability_zone = "N1"
+  additional_subnet_names = [
+    "example-subnet-2",
+    "example-subnet-3"
+  ]
+
+  availability_zone = "S1"
+
+  keypair     = "example-keypair"
+  is_reserved = false
+
+
+  tags = [
+    "production",
+    "baremetal"
+  ]
 
   is_reserved = true
   system_id   = "system-id"
@@ -134,15 +155,6 @@ at `apply`.
 
 ### Almost every attribute forces replacement
 
-Unlike the VM resource, most attributes on `airtelcloud_baremetal` --
-including `name`, `flavor`, `os_image`, `cloud_init`, `subnet_name`,
-`availability_zone`, `network_name`, `additional_subnet_names`, `system_id`,
-`keypair`, `keypair_id`, `public_key`, `storage`, and `backup_config` -- carry
-`RequiresReplace`. Changing any of these on an existing module call destroys
-and recreates the server. Only `tags`, `policy_enabled`, `delete_disks`, and
-`secure_erase` can be changed in place.
-
-### No configurable `timeouts`
 
 This resource does not expose a `timeouts` block in its schema. The
 30-minute provisioning wait (polling for `state = Ready` and `power = On`)
