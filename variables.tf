@@ -107,9 +107,13 @@ variable "is_reserved" {
 #########################################
 
 variable "keypair" {
-  description = "Optional SSH keypair name to inject via allocate metadata. Forces replacement if changed."
+  description = "SSH keypair name to inject via allocate metadata. Required as of the provider's latest commit -- previously Optional. Forces replacement if changed."
   type        = string
-  default     = null
+
+  validation {
+    condition     = length(trim(var.keypair, " ")) > 0
+    error_message = "keypair cannot be empty."
+  }
 }
 
 
