@@ -33,7 +33,7 @@ variable "os_image" {
 }
 
 variable "cloud_init" {
-  description = "Cloud-init script for first boot. Forces replacement if changed. When public_key is also set, the provider appends its own runcmd block that creates a cloud-user with that key, in addition to this script."
+  description = "Cloud-init script for first boot."
   type        = string
   default     = null
 }
