@@ -100,11 +100,7 @@ variable "is_reserved" {
   default     = false
 }
 
-variable "system_id" {
-  description = "Optional system id used by the backend for reservation/release. Forces replacement if changed."
-  type        = string
-  default     = null
-}
+
 
 #########################################
 # Authentication
@@ -116,17 +112,6 @@ variable "keypair" {
   default     = null
 }
 
-variable "keypair_id" {
-  description = "Optional keypair UUID, sent as keypairId in the baremetal allocate API. Forces replacement if changed."
-  type        = string
-  default     = null
-}
-
-variable "public_key" {
-  description = "Optional SSH public key, sent as publicKey in the baremetal allocate API. When set without cloud_init, the provider injects a runcmd block that creates a cloud-user account with this key. Forces replacement if changed."
-  type        = string
-  default     = null
-}
 
 #########################################
 # Storage

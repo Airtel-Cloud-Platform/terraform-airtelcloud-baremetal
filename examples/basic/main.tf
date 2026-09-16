@@ -9,6 +9,5 @@ module "baremetal" {
   subnet_name  = "subnet-name"
 
   availability_zone = "N1"
-
-  public_key = "ssh-rsa AAAA..."
+  keypair           = "my-keypair"
 }

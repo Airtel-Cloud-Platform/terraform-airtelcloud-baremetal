@@ -4,7 +4,7 @@ Terraform module for provisioning and managing baremetal servers on Airtel Cloud
 
 ## Features
 
-* Provisions an Airtel Cloud baremetal server.
+* Provisions an Airtel Cloud baremetal server and waits for it to reach Ready state with power On
 * Supports flavor and OS image selection.
 * Supports primary and additional subnet configuration.
 * Resolves VPC and subnet names to backend IDs through the Airtel Cloud provider.
@@ -61,7 +61,6 @@ module "baremetal" {
   keypair     = "example-keypair"
   is_reserved = false
 
-  system_id = "example-system-id"
 
   tags = [
     "production",
@@ -224,11 +223,6 @@ The default value is:
 is_reserved = false
 ```
 
-The optional `system_id` argument can be used to provide a system identifier used by the backend during reservation and release operations.
-
-```hcl
-system_id = "example-system-id"
-```
 
 ## Cloud-Init
 
