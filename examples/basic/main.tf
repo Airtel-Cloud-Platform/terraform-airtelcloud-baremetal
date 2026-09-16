@@ -1,5 +1,5 @@
 module "baremetal" {
-  source = "../.."
+  source = "Airtel-Cloud-Platform/baremetal/airtelcloud"
 
   name     = "bm01"
   flavor   = "bm.large"
