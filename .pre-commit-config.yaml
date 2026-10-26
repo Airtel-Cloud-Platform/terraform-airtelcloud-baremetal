@@ -1,0 +1,39 @@
+# Local secret checks. One-time per clone:  pre-commit install
+# (needs: brew install pre-commit trufflehog trivy)
+# The same checks run again in CI (.github/workflows/secrets.yml), which can't be skipped.
+
+default_install_hook_types: [pre-commit, pre-push]
+default_stages: [pre-commit]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: detect-private-key
+      - id: detect-aws-credentials
+        args: [--allow-missing-credentials]
+
+  - repo: local
+    hooks:
+      # Staged files only: fails on live keys and on keys it couldn't verify (e.g. offline).
+      - id: trufflehog-staged
+        name: trufflehog (staged files)
+        entry: trufflehog filesystem --results=verified,unknown --fail --no-update
+        language: system
+        stages: [pre-commit]
+
+      # Every commit about to be pushed, so a key committed and then deleted is still caught.
+      - id: trufflehog-push
+        name: trufflehog (commits being pushed)
+        entry: bash -c 'base=$(git rev-parse --abbrev-ref origin/HEAD 2>/dev/null || echo origin/main); git fetch -q origin "${base#origin/}" 2>/dev/null; trufflehog git file://. --since-commit="$base" --branch=HEAD --results=verified,unknown --fail --no-update'
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
+
+      # Airtel Cloud key patterns.
+      - id: trivy-secrets
+        name: trivy (Airtel Cloud key patterns)
+        entry: trivy fs --config .github/trivy.yaml --exit-code 1 .
+        language: system
+        pass_filenames: false

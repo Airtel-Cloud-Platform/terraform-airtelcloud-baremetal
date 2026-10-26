@@ -1,0 +1,12 @@
+# Trivy config for the secrets workflow and the pre-commit hook.
+scan:
+  scanners:
+    - secret
+  skip-dirs:
+    - .git
+    - vendor
+    - node_modules
+    - .terraform
+secret:
+  config: .github/trivy-secret.yaml
+quiet: true
