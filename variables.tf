@@ -33,7 +33,7 @@ variable "os_image" {
 }
 
 variable "cloud_init" {
-  description = "Cloud-init script for first boot."
+  description = "Cloud-init script for first boot. Forces replacement if changed."
   type        = string
   default     = null
 }
@@ -43,7 +43,7 @@ variable "cloud_init" {
 #########################################
 
 variable "network_name" {
-  description = "VPC name or UUID. Required to resolve subnet_name even though the provider schema marks this attribute Optional -- the resource's create logic fails without it. Forces replacement if changed."
+  description = "VPC name or UUID. Required. Forces replacement if changed."
   type        = string
 
   validation {
@@ -95,19 +95,23 @@ variable "availability_zone" {
 #########################################
 
 variable "is_reserved" {
-  description = "Whether to allocate from reserved capacity."
+  description = "Whether to allocate from reserved capacity. Default false. Does not force replacement."
   type        = bool
   default     = false
 }
 
-
+variable "system_id" {
+  description = "Optional system identifier used during reservation and release. Forces replacement if changed."
+  type        = string
+  default     = null
+}
 
 #########################################
 # Authentication
 #########################################
 
 variable "keypair" {
-  description = "SSH keypair name to inject via allocate metadata. Required as of the provider's latest commit -- previously Optional. Forces replacement if changed."
+  description = "SSH keypair name to inject into the server. Required. Forces replacement if changed."
   type        = string
 
   validation {
@@ -129,7 +133,7 @@ variable "storage" {
     path         = optional(string)
     type         = optional(string)
     file_system  = optional(string)
-    force_format = optional(bool, false)
+    force_format = optional(bool)
   }))
   default = null
 
@@ -147,7 +151,7 @@ variable "storage" {
 #########################################
 
 variable "backup_config" {
-  description = "Optional backup schedule sent as allocate backupConfig. Forces replacement if changed. Note: this only sets the initial schedule at allocation time -- use policy_enabled to toggle the backup policy on an existing server."
+  description = "Optional backup schedule. Does not force replacement. Use policy_enabled to toggle the backup policy after create."
   type = object({
     schedule_type       = optional(string)
     start_time          = optional(string)
@@ -171,7 +175,7 @@ variable "policy_enabled" {
 #########################################
 
 variable "tags" {
-  description = "Optional list of tags."
+  description = "Allocation/placement tags for the baremetal service. Does not force replacement."
   type        = list(string)
   default     = null
 }

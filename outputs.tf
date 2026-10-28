@@ -28,6 +28,11 @@ output "hostname" {
   value       = airtelcloud_baremetal.this.hostname
 }
 
+output "availability_zone" {
+  description = "Availability zone in which the server is allocated."
+  value       = airtelcloud_baremetal.this.availability_zone
+}
+
 output "ip_addresses" {
   description = "Assigned IP addresses."
   value       = airtelcloud_baremetal.this.ip_addresses

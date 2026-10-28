@@ -1,19 +1,18 @@
 module "baremetal" {
-  source = "Airtel-Cloud-Platform/baremetal/airtelcloud"
+  source = "../.."
 
   name     = "production-bm01"
-  flavor   = "bm.xlarge"
-  os_image = "CentOS_Stream9_May2026"
+  flavor   = "metal-c56-m1024"
+  os_image = "ubuntu22_Aug2026"
 
-  network_name            = "vpc-name"
-  subnet_name             = "subnet-name"
-  additional_subnet_names = ["subnet-name-2"]
+  network_name            = "example-vpc"
+  subnet_name             = "example-subnet"
+  additional_subnet_names = ["example-subnet-2"]
 
-  availability_zone = "N1"
+  availability_zone = "S1"
 
-  is_reserved = true
-
-  keypair = "keypair-uuid"
+  is_reserved = false
+  keypair     = "example-keypair"
 
   cloud_init = <<-EOF
     #cloud-config
@@ -27,20 +26,21 @@ module "baremetal" {
 
   storage = [
     {
-      name        = "data-disk-1"
-      size        = "500"
-      path        = "/data"
-      type        = "BlockStorage"
-      file_system = "xfs"
+      name         = "application-data"
+      size         = "100"
+      path         = "/data"
+      type         = "BlockStorage"
+      file_system  = "xfs"
+      force_format = true
     }
   ]
 
   backup_config = {
     schedule_type       = "weekly_full"
     start_time          = "21:00"
-    incr_days           = [1, 2, 3, 4, 5]
-    full_days           = [0]
-    full_retention      = 4
+    incr_days           = []
+    full_days           = [7]
+    full_retention      = 1
     full_retention_unit = "MONTHS"
     backup_selections   = ["/data"]
   }

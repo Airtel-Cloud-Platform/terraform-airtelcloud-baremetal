@@ -15,6 +15,7 @@ resource "airtelcloud_baremetal" "this" {
   additional_subnet_names = var.additional_subnet_names
 
   is_reserved = var.is_reserved
+  system_id   = var.system_id
 
   keypair = var.keypair
 
