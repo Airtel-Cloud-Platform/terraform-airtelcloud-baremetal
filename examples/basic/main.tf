@@ -1,13 +1,13 @@
 module "baremetal" {
-  source = "Airtel-Cloud-Platform/baremetal/airtelcloud"
+  source = "../.."
 
   name     = "bm01"
-  flavor   = "bm.large"
-  os_image = "CentOS_Stream9_May2026"
+  flavor   = "metal-c56-m1024"
+  os_image = "ubuntu22_Aug2026"
 
-  network_name = "vpc-name"
-  subnet_name  = "subnet-name"
+  network_name = "example-vpc"
+  subnet_name  = "example-subnet"
 
-  availability_zone = "N1"
-  keypair           = "my-keypair"
+  availability_zone = "S1"
+  keypair           = "example-keypair"
 }

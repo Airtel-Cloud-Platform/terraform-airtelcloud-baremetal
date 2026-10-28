@@ -1,8 +1,6 @@
 # Complete Example
 
-A fully-configured `airtelcloud_baremetal` server: reserved capacity,
-extra storage, an initial backup schedule, tags, and destroy-time disk
-cleanup.
+Fully configured `airtelcloud_baremetal`: extra subnets, storage, backup schedule, tags, and destroy-time disk flags.
 
 ## Usage
 
@@ -12,11 +10,6 @@ terraform init
 terraform plan
 ```
 
-This example uses a relative `source = "../.."`, pointing at the module
-root two directories up. Replace `network_name`, `subnet_name`,
-`availability_zone`, `flavor`, `os_image`, `system_id`, and `keypair_id`
-with values valid for your account before applying.
+This example uses `source = "../.."`. Replace `network_name`, `subnet_name`, `availability_zone`, `flavor`, `os_image`, and `keypair` with values valid for your account before applying.
 
-Note that almost every attribute in this module forces replacement --
-see the module's own README for the full list -- so changing most of
-these values after the first `apply` destroys and recreates the server.
+`name`, `flavor`, `os_image`, `network_name`, `subnet_name`, `availability_zone`, `keypair`, `cloud_init`, `storage`, `additional_subnet_names`, and `system_id` force replacement. `backup_config`, `policy_enabled`, `tags`, `is_reserved`, `delete_disks`, and `secure_erase` do not.

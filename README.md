@@ -12,7 +12,7 @@ Terraform module for provisioning and managing baremetal servers on Airtel Cloud
 * Supports backup schedule configuration.
 * Supports cloud-init configuration for first-boot initialization.
 * Supports SSH keypair configuration.
-* Supports allocation from reserved capacity.
+* Supports allocation from reserved capacity and optional `system_id`.
 * Supports backup policy enable/disable.
 * Supports configurable disk deletion and secure erase during destroy.
 * Exposes server state, power state, hostname, IP addresses, and backend port information.
